@@ -107,7 +107,7 @@ namespace limbo {
                 }
 
                 Eigen::VectorXd best_params = params;
-                double best = log(0);
+                double best = std::log(0);
 
                 for (int i = 0; i < Params::opt_rprop::iterations(); ++i) {
                     auto perf = opt::eval_grad(f, params);

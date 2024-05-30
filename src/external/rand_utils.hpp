@@ -447,9 +447,6 @@ namespace randutils {
 
         default_seeds local_entropy()
         {
-            // This is a constant that changes every time we compile the code
-            constexpr uint32_t compile_stamp = fnv(2166136261U, __DATE__ __TIME__ __FILE__);
-
             // Some people think you shouldn't use the random device much because
             // on some platforms it could be expensive to call or "use up" vital
             // system-wide entropy, so we just call it once.
@@ -477,11 +474,6 @@ namespace randutils {
             // run in systems with ASLR, such as OS X, but on Linux it might not
             // unless we compile with -fPIC -pic.
             auto self_data = hash(this);
-
-            // The address of the time function.  It should hopefully be in
-            // a system library that hopefully isn't always in the same place
-            // (might not change until system is rebooted though)
-            auto time_func = hash(&std::chrono::high_resolution_clock::now);
 
             // The address of the exit function.  It should hopefully be in
             // a system library that hopefully isn't always in the same place

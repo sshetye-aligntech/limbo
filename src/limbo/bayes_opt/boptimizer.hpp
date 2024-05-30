@@ -122,7 +122,6 @@ namespace limbo {
 #elif defined(USE_LIBCMAES)
                 using acquiopt_t = opt::Cmaes<Params>;
 #else
-#warning NO NLOpt, and NO Libcmaes: the acquisition function will be optimized by a grid search algorithm (which is usually bad). Please install at least NLOpt or libcmaes to use limbo!.
                 using acquiopt_t = opt::GridSearch<Params>;
 #endif
             };
