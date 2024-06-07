@@ -70,6 +70,9 @@ namespace limbo {
         template <typename Params>
         struct GridSearch {
         public:
+            void initialize(int i_dim, const std::vector<double>& i_lowerBounds = {},
+                      const std::vector<double>& i_upperBounds = {}){}
+
             template <typename F>
             Eigen::VectorXd operator()(const F& f, const Eigen::VectorXd& init, bool bounded) const
             {

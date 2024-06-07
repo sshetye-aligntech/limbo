@@ -61,7 +61,7 @@
     }
 
 #define BO_DYN_PARAM(Type, Name)           \
-    static Type _##Name;                   \
+    inline static Type _##Name;                   \
     static Type Name() { return _##Name; } \
     static void set_##Name(const Type& v) { _##Name = v; }
 
@@ -102,7 +102,7 @@
 #define BO_PARAM_VECTOR(Type, Name, ...)                                                    \
     static const Eigen::Matrix<Type, __VA_NARG__(__VA_ARGS__), 1> Name()                    \
     {                                                                                       \
-        static constexpr Type _##Name[] = {__VA_ARGS__};                                    \
+        static const Type _##Name[] = {__VA_ARGS__};                                        \
         return Eigen::Map<const Eigen::Matrix<Type, __VA_NARG__(__VA_ARGS__), 1>>(_##Name); \
     }
 

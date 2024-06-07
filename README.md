@@ -1,21 +1,21 @@
-limbo [![Build Status](https://travis-ci.org/resibots/limbo.svg?branch=master)](https://travis-ci.org/resibots/limbo) [![DOI](http://joss.theoj.org/papers/10.21105/joss.00545/status.svg)](https://doi.org/10.21105/joss.00545)
-============
+limbo [![Build Status](https://travis-ci.org/resibots/limbo.svg?branch=master)](https://travis-ci.org/resibots/limbo)
+=====
 
 Limbo (LIbrary for Model-Based Optimization) is an open-source C++11 library for Gaussian Processes and data-efficient optimization (e.g., Bayesian optimization) that is designed to be both highly flexible and very fast. It can be used as a state-of-the-art optimization library or to experiment with novel algorithms with "plugin" components.
-
-![logo](./docs/logo/logo_limbo.png)
 
 Documentation & Versions
 ------------------------
 The development branch is the [master](https://github.com/resibots/limbo/tree/master) branch. For the latest stable release, check the [release-2.1](https://github.com/resibots/limbo/tree/release-2.1) branch.
 Documentation is available at: http://www.resibots.eu/limbo
 
+A short paper that introduces the library is available here: https://members.loria.fr/JBMouret/pdf/limbo_paper.pdf
+
 Citing Limbo
 ------------
 If you use Limbo in a scientific paper, please cite:
 
 
-Cully, A., Chatzilygeroudis, K., Allocati, F., and Mouret J.-B., (2018). [Limbo: A Flexible High-performance Library for Gaussian Processes modeling and Data-Efficient Optimization](http://joss.theoj.org/papers/10.21105/joss.00545). *The Journal of Open Source Software*.
+Cully, A., Chatzilygeroudis, K., Allocati, F., and Mouret J.-B., (2018). [Limbo: A Flexible High-performance Library for Gaussian Processes modeling and Data-Efficient Optimization](https://members.loria.fr/JBMouret/pdf/limbo_paper.pdf). *The Journal of Open Source Software*.
 
 In BibTex:
 
@@ -25,10 +25,7 @@ In BibTex:
         year={2018},
         journal={{The Journal of Open Source Software}},
         publisher={The Open Journal},
-        volume={3},
-        number={26},
-        pages={545},
-        doi={10.21105/joss.00545}
+        url={https://members.loria.fr/JBMouret/pdf/limbo_paper.pdf}
     }
 
 

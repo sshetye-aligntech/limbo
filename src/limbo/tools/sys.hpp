@@ -49,12 +49,7 @@
 
 #include <ctime>
 #include <string>
-
-#if defined(__MINGW32__) || defined(_MSC_VER)
-#include <winsock2.h>
-#else
 #include <unistd.h>
-#endif
 
 namespace limbo {
     namespace tools {
@@ -74,9 +69,7 @@ namespace limbo {
         inline std::string hostname()
         {
             char hostname[50];
-            int res = gethostname(hostname, 50);
-            assert(res == 0);
-            res = 0; // avoid a warning in opt mode
+            gethostname(hostname, 50);
             return std::string(hostname);
         }
 

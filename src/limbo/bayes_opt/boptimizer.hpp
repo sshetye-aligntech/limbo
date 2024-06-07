@@ -135,7 +135,7 @@ namespace limbo {
 
             /// The main function (run the Bayesian optimization algorithm)
             template <typename StateFunction, typename AggregatorFunction = FirstElem>
-            void optimize(const StateFunction& sfun, const AggregatorFunction& afun = AggregatorFunction(), bool reset = true)
+            void optimize(const StateFunction& sfun, const std::vector<double>& lowerBounds = {}, const std::vector<double>& upperBounds = {}, const AggregatorFunction& afun = AggregatorFunction(), bool reset = true)
             {
                 this->_init(sfun, afun, reset);
 
@@ -145,13 +145,20 @@ namespace limbo {
                     _model = model_t(StateFunction::dim_in(), StateFunction::dim_out());
 
                 acqui_optimizer_t acqui_optimizer;
+#if !defined(USE_NLOPT) && !defined(USE_LIBCMAES)
+                acqui_optimizer.initialize(StateFunction::dim_in(), lowerBounds, upperBounds);
+#endif
 
                 while (!this->_stop(*this, afun)) {
                     acquisition_function_t acqui(_model, this->_current_iteration);
 
                     auto acqui_optimization =
                         [&](const Eigen::VectorXd& x, bool g) { return acqui(x, afun, g); };
-                    Eigen::VectorXd starting_point = tools::random_vector(StateFunction::dim_in(), Params::bayes_opt_bobase::bounded());
+
+                    const auto lower = lowerBounds.empty() ? 0.0 : *std::max_element(lowerBounds.begin(), lowerBounds.end());
+                    const auto upper = upperBounds.empty() ? 1.0 : *std::min_element(upperBounds.begin(), upperBounds.end());
+                    Eigen::VectorXd starting_point = tools::random_vector(StateFunction::dim_in(), Params::bayes_opt_bobase::bounded(), lower, upper);
+
                     Eigen::VectorXd new_sample = acqui_optimizer(acqui_optimization, starting_point, Params::bayes_opt_bobase::bounded());
                     this->eval_and_add(sfun, new_sample);
 

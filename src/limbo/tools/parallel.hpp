@@ -58,14 +58,7 @@
 #include <tbb/parallel_for_each.h>
 #include <tbb/parallel_reduce.h>
 #include <tbb/parallel_sort.h>
-
-#ifndef USE_TBB_ONEAPI
 #include <tbb/task_scheduler_init.h>
-#else
-#include <oneapi/tbb/global_control.h>
-using namespace oneapi;
-#endif
-
 #endif
 
 ///@defgroup par_tools
@@ -87,7 +80,7 @@ namespace limbo {
             /// @ingroup par_tools
             /// convert a std::vector to something else (e.g. a std::list)
             template <typename V>
-            inline std::vector<typename V::value_type> convert_vector(const V& v)
+            std::vector<typename V::value_type> convert_vector(const V& v)
             {
                 std::vector<typename V::value_type> v2(v.size());
                 std::copy(v.begin(), v.end(), v2.begin());
@@ -106,7 +99,7 @@ namespace limbo {
 #endif
 
             template <typename V>
-            inline V convert_vector(const V& v)
+            V convert_vector(const V& v)
             {
                 return v;
             }
@@ -114,21 +107,14 @@ namespace limbo {
 #endif
 
 #ifdef USE_TBB
-            inline void init(int threads = -1)
+            inline void init()
             {
-#ifndef USE_TBB_ONEAPI
-            static tbb::task_scheduler_init init(threads);
-#else
-            if (threads < 0)
-                threads = tbb::info::default_concurrency();
-            static tbb::global_control global_limit(tbb::global_control::max_allowed_parallelism, threads);
-
-#endif
+                static tbb::task_scheduler_init init;
             }
 #else
             /// @ingroup par_tools
             /// init TBB (if activated) for multi-core computing
-            inline void init(int threads = -1)
+            void init()
             {
             }
 #endif
@@ -166,7 +152,7 @@ namespace limbo {
             /// @ingroup par_tools
             /// parallel max
             template <typename T, typename F, typename C>
-            inline T max(const T& init, int num_steps, const F& f, const C& comp)
+            T max(const T& init, int num_steps, const F& f, const C& comp)
             {
 #ifdef USE_TBB
                 auto body = [&](const tbb::blocked_range<size_t>& r, T current_max) -> T {

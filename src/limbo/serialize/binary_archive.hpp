@@ -43,9 +43,6 @@
 //| The fact that you are presently reading this means that you have had
 //| knowledge of the CeCILL-C license and that you accept its terms.
 //|
-#ifndef LIMBO_SERIALIZE_BINARY_ARCHIVE_HPP
-#define LIMBO_SERIALIZE_BINARY_ARCHIVE_HPP
-
 #include <cassert>
 #include <iostream>
 #include <sstream>
@@ -127,18 +124,13 @@ namespace limbo {
                 return _dir_name + "/" + object_name + ".bin";
             }
 
-            const std::string& directory() const
-            {
-                return _dir_name;
-            }
-
         protected:
             std::string _dir_name;
 
             void _create_directory() const
             {
                 boost::filesystem::path my_path(_dir_name);
-                boost::filesystem::create_directories(my_path);
+                boost::filesystem::create_directory(my_path);
             }
 
             template <class Matrix, class Stream>
@@ -162,5 +154,3 @@ namespace limbo {
         };
     } // namespace serialize
 } // namespace limbo
-
-#endif

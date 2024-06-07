@@ -225,7 +225,7 @@ namespace limbo {
             /// return the mean observation (only call this if the output of the GP is of dimension 1)
             Eigen::VectorXd mean_observation() const
             {
-                assert(_dim_out > 0);
+                // TODO: Check if _dim_out is correct?!
                 return _samples.size() > 0 ? _mean_observation
                                            : Eigen::VectorXd::Zero(_dim_out);
             }
@@ -408,36 +408,19 @@ namespace limbo {
             void set_log_loo_cv(double log_loo_cv) { _log_loo_cv = log_loo_cv; }
 
             /// LLT matrix (from Cholesky decomposition)
+            //const Eigen::LLT<Eigen::MatrixXd>& llt() const { return _llt; }
             const Eigen::MatrixXd& matrixL() const { return _matrixL; }
 
             const Eigen::MatrixXd& alpha() const { return _alpha; }
 
-            /// return the list of samples
+            /// return the list of samples that have been tested so far
             const std::vector<Eigen::VectorXd>& samples() const { return _samples; }
-
-            /// return the list of observations
-            std::vector<Eigen::VectorXd> observations() const
-            {
-                std::vector<Eigen::VectorXd> observations;
-                for (int i = 0; i < _observations.rows(); i++) {
-                    observations.push_back(_observations.row(i));
-                }
-
-                return observations;
-            }
-
-            /// return the observations (in matrix form)
-            /// (NxD), where N is the number of points and D is the dimension output
-            const Eigen::MatrixXd& observations_matrix() const
-            {
-                return _observations;
-            }
 
             bool inv_kernel_computed() { return _inv_kernel_updated; }
 
             /// save the parameters and the data for the GP to the archive (text or binary)
             template <typename A>
-            void save(const std::string& directory) const
+            void save(const std::string& directory)
             {
                 A archive(directory);
                 save(archive);
@@ -445,7 +428,7 @@ namespace limbo {
 
             /// save the parameters and the data for the GP to the archive (text or binary)
             template <typename A>
-            void save(const A& archive) const
+            void save(const A& archive)
             {
                 if (_kernel_function.h_params_size() > 0) {
                     archive.save(_kernel_function.h_params(), "kernel_params");
